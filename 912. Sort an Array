@@ -1,0 +1,63 @@
+class Solution {
+    public int[] sortArray(int[] nums) {
+        mergeSort(nums); 
+        return nums; 
+    }
+
+    private static void mergeSort(int[] array) {
+        int len = array.length;
+        if (len < 2) {
+            return; 
+        }
+
+        int mid = len / 2;
+        int[] lefthalf = new int[mid];
+        int[] righthalf = new int[len - mid];
+
+        for (int i = 0; i < mid; i++) {
+            lefthalf[i] = array[i];
+        }
+        for (int i = mid; i < len; i++) {
+            righthalf[i - mid] = array[i];
+             //in mid middle element  will be stored ,i start from 5 to len ,
+            //so 5-5=0,6-5=1,7-5=2.....the index of right half start from 0;--- 
+        }
+
+        mergeSort(lefthalf);
+        mergeSort(righthalf); 
+        merge(array, lefthalf, righthalf);
+    }
+
+    // Merge two sorted arrays
+    private static void merge(int[] array, int[] lefthalf, int[] righthalf) {
+        int leftSize = lefthalf.length;
+        int rightSize = righthalf.length;
+        int i = 0, j = 0, k = 0;
+
+        // Merge elements into the main array
+        while (i < leftSize && j < rightSize) {
+            if (lefthalf[i] <= righthalf[j]) {
+                array[k] = lefthalf[i];
+                i++;
+            } else {
+                array[k] = righthalf[j];
+                j++;
+            }
+            k++;
+        }
+
+        // Copy remaining elements from the left half
+        while (i < leftSize) {
+            array[k] = lefthalf[i];
+            i++;
+            k++;
+        }
+
+        // Copy remaining elements from the right half
+        while (j < rightSize) {
+            array[k] = righthalf[j];
+            j++;
+            k++;
+        }
+    }
+}
