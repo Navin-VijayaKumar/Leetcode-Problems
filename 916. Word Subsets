@@ -1,0 +1,39 @@
+import java.util.*;
+
+class Solution {
+    public List<String> wordSubsets(String[] words1, String[] words2) {
+        List<String> res = new ArrayList<>();
+        int[] tar = new int[26]; // Target array to store max frequency of each character in words2
+
+        // Build the target array for words2
+        for (String b : words2) {
+            int[] temp = new int[26];
+            for (char c : b.toCharArray()) {
+                temp[c - 'a']++;
+            }
+            for (int i = 0; i < 26; i++) {
+                tar[i] = Math.max(tar[i], temp[i]);
+            }
+        }
+
+        // Check each word in words1 against the target array
+        for (String a : words1) {
+            int[] temp1 = new int[26];
+            for (char d : a.toCharArray()) {
+                temp1[d - 'a']++;
+            }
+            boolean check = true;
+            for (int i = 0; i < 26; i++) {
+                if (temp1[i] < tar[i]) {
+                    check = false;
+                    break;
+                }
+            }
+            if (check) {
+                res.add(a);
+            }
+        }
+
+        return res;
+    }
+}
